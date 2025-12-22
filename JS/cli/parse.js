@@ -215,10 +215,6 @@ function parseWithStr(rawCode) {
     config.extra.js = methodCodes;
   }
 
-  // default use universal type
-  if (typeof config.type != "number") {
-    config.type = 1
-  }
   return config
 }
 
@@ -235,12 +231,9 @@ function parseWithFile(file) {
   }
 }
 
-/** @type {(dir: string, excludes?: string[]) => string[]} */
-function scanTsFiles(dir, excludes = []) {
+/** @type {(dir: string) => string[]} */
+function scanTsFiles(dir) {
   const tsFiles = []
-  const defaultExcludes = ['node_modules', '.git', '.vscode', 'dist', 'build']
-  const allExcludes = [...defaultExcludes, ...excludes]
-  
   function scanDirectory(currentDir, one = true) {
     try {
       const items = fs.readdirSync(currentDir)
@@ -250,7 +243,7 @@ function scanTsFiles(dir, excludes = []) {
         const stat = fs.statSync(fullPath)
 
         if (stat.isDirectory()) {
-          if (!allExcludes.includes(item)) {
+          if (!['node_modules', '.git', '.vscode', 'dist', 'build'].includes(item)) {
             scanDirectory(fullPath, false)
           }
         } else if (stat.isFile() && item.endsWith('.ts') && !one) {
@@ -265,9 +258,9 @@ function scanTsFiles(dir, excludes = []) {
   return tsFiles
 }
 
-/** @type {(dir: string, verbose?: boolean, excludes?: string[]) => Iconfig[]} */
-function parseAllTsFiles(dir, verbose = true, excludes = []) {
-  const tsFiles = scanTsFiles(dir, excludes)
+/** @type {(dir: string, verbose?: boolean) => Iconfig[]} */
+function parseAllTsFiles(dir, verbose = true) {
+  const tsFiles = scanTsFiles(dir)
   const configs = []
   if (verbose) {
     console.log(`Found ${tsFiles.length} TypeScript files`)
@@ -298,7 +291,6 @@ program
   .version('1.0.0')
   .option('-o, --output <file>', 'output JSON file', 'result.json')
   .option('-d, --directory <dir>', 'directory to scan', process.cwd())
-  .option('-e, --excludes <dirs...>', 'directories to exclude (in addition to default excludes)', [])
   .option('-v, --verbose', 'verbose output', false)
   .parse();
 
@@ -307,9 +299,8 @@ const options = program.opts();
 const currentDir = options.directory;
 const outputFile = options.output;
 const verbose = options.verbose;
-const excludes = options.excludes;
 
-const allConfigs = parseAllTsFiles(currentDir, verbose, excludes);
+const allConfigs = parseAllTsFiles(currentDir, verbose);
 
 if (outputFile) {
   try {

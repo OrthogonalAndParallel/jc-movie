@@ -1,8 +1,7 @@
 {
-  "types": "./index.d.ts",
-  "dependencies": {
+  "devDependencies": {
     "@types/node": "^24.3.0",
-    "cheerio": "^1.1.2",
-    "dayjs": "^1.11.18"
-  }
+    "cheerio": "^1.1.2"
+  },
+  "types": "./cm.d.ts"
 }
