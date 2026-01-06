@@ -16,11 +16,11 @@ dependencies:
   dio_cookie_manager: ^3.2.0
   awesome_dio_interceptor: ^1.3.0
 
-  # dio_cache_interceptor: ^4.0.3
-  dio_cache_interceptor:
-    git:
-      url: https://github.com/waifu-project/dart_http_cache
-      path: dio_cache_interceptor
+  dio_cache_interceptor: ^4.0.5
+  # dio_cache_interceptor:
+  #   git:
+  #     url: https://github.com/waifu-project/dart_http_cache
+  #     path: dio_cache_interceptor
 
   path_provider: ^2.1.5
   jsonc: ^0.0.3
@@ -28,9 +28,9 @@ dependencies:
   html_unescape: ^2.0.0
   equatable: ^2.0.7
 
-    # flutter_js: ^0.8.5
-  flutter_js:
-    git: https://github.com/yhsj0919/flutter_js
+  flutter_js: ^0.8.5
+  # flutter_js:
+  #   git: https://github.com/yhsj0919/flutter_js
 
   dart_qjson: ^1.0.2
 

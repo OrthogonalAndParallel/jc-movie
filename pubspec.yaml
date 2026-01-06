@@ -50,26 +50,31 @@ dependencies:
   xi:
     path: packages/xi
 
-  hide_cursor:
-    git:
-      url: https://github.com/waifu-project/hide_cursor
-      branch: main
-      ref: 33643d93803c09455445389ad57b1da880cd04aa
-  desktop_webview_window:
-    git:
-      url: https://github.com/waifu-project/flutter-plugins
-      branch: webview_window_icon
-      ref: b8b90776e769e23e27198c297d88246a13b4e75a
-      path: packages/desktop_webview_window
-  command_palette:
-    git:
-      url: https://github.com/d1y/command_palette
-      branch: d1y
-      ref: c9cf207fccd07ecaa6de0f7ea898046ffa26ff3a
-  webplayer_embedded:
-    git:
-      url: https://github.com/d1y/webplayer_embedded
-      ref: 1d78923edd091b90d362ce9587aacf8ce83a93fa
+  # 用于隐藏鼠标指针，可以直接注释掉依赖及所有相关调用
+  # hide_cursor:
+  #   git:
+  #     url: https://github.com/waifu-project/hide_cursor
+  #     branch: main
+  #     ref: 33643d93803c09455445389ad57b1da880cd04aa
+  # 桌面端 WebView 内核插件，对核心功能影响不大
+  # desktop_webview_window:
+  #   git:
+  #     url: https://github.com/waifu-project/flutter-plugins
+  #     branch: webview_window_icon
+  #     ref: b8b90776e769e23e27198c297d88246a13b4e75a
+  #     path: packages/desktop_webview_window
+  # 命令面板组件，非核心功能
+  # command_palette:
+  #   git:
+  #     url: https://github.com/d1y/command_palette
+  #     branch: d1y
+  #     ref: c9cf207fccd07ecaa6de0f7ea898046ffa26ff3a
+  # WebView 内核相关依赖，直接注释掉依赖及所有调用即可
+  # webplayer_embedded:
+  #   git:
+  #     url: https://github.com/d1y/webplayer_embedded
+  #     ref: 1d78923edd091b90d362ce9587aacf8ce83a93fa
+    
   bitsdojo_window:
     git:
       url: https://github.com/bitsdojo/bitsdojo_window
@@ -110,14 +115,14 @@ dependencies:
       ref: main
       path: ./media_kit
   media_kit_video:
-    # git:
-    #   url: https://github.com/Predidit/media-kit.git
-    #   ref: main
-    #   path: ./media_kit_video
     git:
-      url: https://github.com/waifu-project/media-kit.git
+      url: https://github.com/Predidit/media-kit.git
       ref: main
       path: ./media_kit_video
+    # git:
+    #   url: https://github.com/waifu-project/media-kit.git
+    #   ref: main
+    #   path: ./media_kit_video
     # path: /Users/d1y/code/github/media-kit/media_kit_video
   media_kit_libs_video:
     git:
@@ -153,11 +158,11 @@ dependency_overrides:
       url: https://github.com/Predidit/media-kit.git
       ref: main
       path: ./media_kit
-  # media_kit_video:
-  #   git:
-  #     url: https://github.com/Predidit/media-kit.git
-  #     ref: main
-  #     path: ./media_kit_video
+  media_kit_video:
+    git:
+      url: https://github.com/Predidit/media-kit.git
+      ref: main
+      path: ./media_kit_video
   media_kit_libs_video:
     git:
       url: https://github.com/Predidit/media-kit.git

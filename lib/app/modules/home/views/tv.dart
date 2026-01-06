@@ -15,7 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
-import 'package:hide_cursor/hide_cursor.dart';
+// import 'package:hide_cursor/hide_cursor.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
 import 'package:pull_down_button/pull_down_button.dart';
@@ -401,14 +401,14 @@ class TVUIState extends State<TVUI>
     if (GetPlatform.isMobile) return;
     _autoHideCursorTimer?.cancel();
     _autoHideCursorTimer = Timer(kAutoHideCursorDuration, () {
-      hideCursor.hideCursor();
+      // hideCursor.hideCursor();
     });
   }
 
   void hijackAutoHideCursor(dynamic _) {
     if (GetPlatform.isMobile) return;
     _autoHideCursorTimer?.cancel();
-    hideCursor.showCursor();
+    // hideCursor.showCursor();
     bool hasDrawer = scaffoldKey.currentState?.hasDrawer ?? false;
     if (showVideoControls || hasDrawer) {
       return;
@@ -480,7 +480,7 @@ class TVUIState extends State<TVUI>
       debugPrint("player dispose error: $error");
     });
     if (GetPlatform.isDesktop) {
-      hideCursor.showCursor();
+      // hideCursor.showCursor();
       windowManager.removeListener(this);
     }
     super.dispose();
@@ -497,7 +497,7 @@ class TVUIState extends State<TVUI>
   @override
   FutureOr<void> afterFirstLayout(BuildContext context) {
     initData();
-    if (GetPlatform.isDesktop) hideCursor.showCursor();
+    // if (GetPlatform.isDesktop) hideCursor.showCursor();
     focusNode.requestFocus();
   }
 
@@ -855,7 +855,7 @@ class TVUIState extends State<TVUI>
             onTap: () {
               if (GetPlatform.isDesktop) {
                 _autoHideCursorTimer?.cancel();
-                hideCursor.showCursor();
+                // hideCursor.showCursor();
               }
               var next = !showVideoControls;
               showVideoControls = next;
@@ -867,7 +867,7 @@ class TVUIState extends State<TVUI>
             onDoubleTap: () async {
               if (GetPlatform.isDesktop) {
                 _autoHideCursorTimer?.cancel();
-                hideCursor.showCursor();
+                // hideCursor.showCursor();
               }
               _showPlayPauseIconForDuration();
               state.widget.controller.player.playOrPause();
@@ -1238,7 +1238,7 @@ class TVUIState extends State<TVUI>
           } else {
             if (GetPlatform.isDesktop) {
               _autoHideCursorTimer?.cancel();
-              hideCursor.showCursor();
+              // hideCursor.showCursor();
             }
           }
         },

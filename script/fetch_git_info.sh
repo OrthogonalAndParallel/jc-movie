@@ -1,3 +1,6 @@
+# 脚本说明：
+# 从 Git 提取信息并生成 lib/git_info.dart，供 Dart 代码读取版本/提交信息。
+
 FILE="lib/git_info.dart"
 
 COMMIT=`git rev-parse --short HEAD`

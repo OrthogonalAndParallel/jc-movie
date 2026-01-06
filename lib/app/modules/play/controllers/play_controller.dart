@@ -6,7 +6,7 @@ import 'package:catmovie/app/modules/play/views/chewie_view.dart';
 import 'package:catmovie/app/modules/play/views/play_view.dart';
 import 'package:catmovie/isar/schema/video_history_schema.dart';
 import 'package:catmovie/utils/boop.dart';
-import 'package:desktop_webview_window/desktop_webview_window.dart';
+// import 'package:desktop_webview_window/desktop_webview_window.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,7 +21,7 @@ import 'package:media_kit/media_kit.dart';
 import 'package:xi/xi.dart';
 import 'package:catmovie/isar/schema/parse_schema.dart';
 import 'package:catmovie/shared/enum.dart';
-import 'package:webplayer_embedded/webplayer_embedded.dart';
+// import 'package:webplayer_embedded/webplayer_embedded.dart';
 
 // 延迟注入播放列表的时间
 const kDelayExecInjectPlaylistJSCode = Duration(seconds: 1);
@@ -112,7 +112,7 @@ String easyGenParseVipUrl(String raw, ParseIsarModel model) {
 class PlayController extends GetxController {
   VideoDetail movieItem = Get.arguments;
 
-  WebPlayerEmbedded webPlayerEmbedded = autoInjector.get<WebPlayerEmbedded>();
+  // WebPlayerEmbedded webPlayerEmbedded = autoInjector.get<WebPlayerEmbedded>();
 
   HomeController home = Get.find<HomeController>();
 
@@ -175,16 +175,16 @@ class PlayController extends GetxController {
   // [webPlayerEmbedded] 中的 HttpServer 实例
   HttpServer? _httpServerContext;
 
-  String url2Iframe(String realUrl, HttpServer server) {
-    var type = getSettingAsKeyIdent<IWebPlayerEmbeddedType>(
-      SettingsAllKey.webviewPlayType,
-    );
-    if (realUrl.endsWith(".m3u8")) {
-      return webPlayerEmbedded.generatePlayerUrl(type, realUrl);
-    }
-    var port = server.port;
-    return "http://localhost:$port/assets/iframe.html?url=$realUrl";
-  }
+  // String url2Iframe(String realUrl, HttpServer server) {
+  //   var type = getSettingAsKeyIdent<IWebPlayerEmbeddedType>(
+  //     SettingsAllKey.webviewPlayType,
+  //   );
+  //   if (realUrl.endsWith(".m3u8")) {
+  //     return webPlayerEmbedded.generatePlayerUrl(type, realUrl);
+  //   }
+  //   var port = server.port;
+  //   return "http://localhost:$port/assets/iframe.html?url=$realUrl";
+  // }
 
   String decodeURLComponent(String raw) {
     return Uri.decodeComponent(raw);
@@ -269,7 +269,8 @@ document.addEventListener('DOMContentLoaded', function() {
     bool isUpSort,
   ) async {
     if (GetPlatform.isWindows) {
-      bool bWebviewWindow = await WebviewWindow.isWebviewAvailable();
+      // bool bWebviewWindow = await WebviewWindow.isWebviewAvailable();
+      bool bWebviewWindow = true;
       if (!bWebviewWindow) {
         await showCupertinoDialog(
           builder: (BuildContext context) => CupertinoAlertDialog(
@@ -356,7 +357,7 @@ document.addEventListener('DOMContentLoaded', function() {
       );
     }
 
-    url = url2Iframe(url, _httpServerContext!);
+    // url = url2Iframe(url, _httpServerContext!);
     debugPrint("webview url: $url");
     // NOTE(d1y): linux 不支持?
     webview.launch(url);
@@ -474,7 +475,7 @@ document.addEventListener('DOMContentLoaded', function() {
     switch (videoKernel) {
       case VideoKernel.webview:
         if (GetPlatform.isDesktop) {
-          return await playWithWebview(playList, curr, url, isUpSort);
+          // return await playWithWebview(playList, curr, url, isUpSort);
         } else {
           if (GetPlatform.isAndroid) {
             if (curr.type == VideoType.iframe) {
@@ -604,7 +605,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (_httpServerContext != null) {
       try {
         _httpServerContext!.close();
-        webPlayerEmbedded.dispose();
+        // webPlayerEmbedded.dispose();
       } catch (e) {
         // I don't care
         debugPrint("close server error: $e");
