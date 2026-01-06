@@ -148,11 +148,7 @@ class _PlayViewState extends State<PlayView> with AfterLayoutMixin {
           logLevel: logLevel,
         ),
       );
-      controller = VideoController(player!, onSpeedUpChanged: (flag) {
-        if (flag) {
-          boop.call(HapticsType.medium);
-        }
-      });
+      controller = VideoController(player!);
       if (player!.platform is NativePlayer) {
         var pp = player!.platform as NativePlayer;
         var temp = await _tempPath();
@@ -329,32 +325,38 @@ class _PlayViewState extends State<PlayView> with AfterLayoutMixin {
         child: const Icon(Icons.aspect_ratio, size: 23),
       ),
     );
-    Widget videoView = Video(
-      fit: mediaKitFit,
-      fill: Colors.black,
-      placeholder: showVideoCover ? _buildCoverImage() : null,
-      controller: controller,
-      onEnterFullscreen: () async {
-        await defaultEnterNativeFullscreen();
-        // workaround: 在 iOS 上全屏之后播放会暂停
-        if (GetPlatform.isIOS) {
-          Future.delayed(const Duration(milliseconds: 88), () {
-            controller.player.pause();
-            controller.player.play();
-          });
-        }
-      },
-      onExitFullscreen: () async {
-        await defaultExitNativeFullscreen();
-        if (GetPlatform.isIOS) {
-          SystemChrome.setPreferredOrientations(
-            [
-              DeviceOrientation.portraitUp,
-              DeviceOrientation.portraitDown,
-            ],
-          );
-        }
-      },
+    Widget videoView = Stack(
+      children: [
+        Positioned.fill(
+          child: Video(
+            fit: mediaKitFit,
+            fill: Colors.black,
+            controller: controller,
+            onEnterFullscreen: () async {
+              await defaultEnterNativeFullscreen();
+              // workaround: 在 iOS 上全屏之后播放会暂停
+              if (GetPlatform.isIOS) {
+                Future.delayed(const Duration(milliseconds: 88), () {
+                  controller.player.pause();
+                  controller.player.play();
+                });
+              }
+            },
+            onExitFullscreen: () async {
+              await defaultExitNativeFullscreen();
+              if (GetPlatform.isIOS) {
+                SystemChrome.setPreferredOrientations(
+                  [
+                    DeviceOrientation.portraitUp,
+                    DeviceOrientation.portraitDown,
+                  ],
+                );
+              }
+            },
+          ),
+        ),
+        if (showVideoCover) Positioned.fill(child: _buildCoverImage()),
+      ],
     );
     var topButtonBar = [
       CupertinoNavigationBarBackButton(

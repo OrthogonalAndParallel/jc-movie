@@ -4,12 +4,14 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:after_layout/after_layout.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:aurora/aurora.dart';
 import 'package:catmovie/app/extension.dart';
 import 'package:catmovie/app/modules/home/controllers/home_controller.dart';
 import 'package:catmovie/app/widget/k_body.dart';
+import 'package:catmovie/app/widget/zoom.dart';
 import 'package:catmovie/app/widget/window_appbar.dart';
 import 'package:catmovie/app/widget/zoom.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,7 +20,10 @@ import 'package:get/get.dart';
 // import 'package:hide_cursor/hide_cursor.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
+import 'package:nuts_activity_indicator/nuts_activity_indicator.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:pull_down_button/pull_down_button.dart';
+import 'package:simple/x.dart';
 import 'package:smooth_list_view/smooth_list_view.dart';
 import 'package:tuple/tuple.dart';
 import 'package:window_manager/window_manager.dart';
@@ -97,6 +102,10 @@ class TabToggle extends Intent {}
 final Color kActiveColor = Color(0xFF6750A4);
 
 var scaffoldKey = GlobalKey<ScaffoldState>();
+
+const kAutoHideCursorDuration = Duration(seconds: 2);
+
+const kSmoothListViewDuration = Duration(milliseconds: 240);
 
 // TODO(d1y): support dynamic set wallpaper
 // https://www.zichen.zone/archives/acg-api.html

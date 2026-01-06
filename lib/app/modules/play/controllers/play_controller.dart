@@ -263,135 +263,17 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   Future<bool> playWithWebview(
-    List<VideoInfo> playList,
     VideoInfo curr,
-    String url,
-    bool isUpSort,
+    List<VideoInfo> playList,
+    int tabIndex,
   ) async {
-    if (GetPlatform.isWindows) {
-      // bool bWebviewWindow = await WebviewWindow.isWebviewAvailable();
-      bool bWebviewWindow = true;
-      if (!bWebviewWindow) {
-        await showCupertinoDialog(
-          builder: (BuildContext context) => CupertinoAlertDialog(
-            title: const Text('提示'),
-            content: const Padding(
-              padding: EdgeInsets.symmetric(
-                vertical: 12.0,
-              ),
-              child: Text(
-                '未安装 edge webview runtime, 无法播放 :(',
-                style: TextStyle(
-                  fontSize: 18,
-                ),
-              ),
-            ),
-            actions: <CupertinoDialogAction>[
-              CupertinoDialogAction(
-                child: const Text(
-                  '我知道了',
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 51, 22, 20),
-                  ),
-                ),
-                onPressed: () {
-                  Get.back();
-                },
-              ),
-              CupertinoDialogAction(
-                isDestructiveAction: true,
-                onPressed: () {
-                  _kWindowsWebviewRuntimeLink.openURL();
-                  Get.back();
-                },
-                child: const Text(
-                  '去下载',
-                  style: TextStyle(
-                    color: Colors.blue,
-                  ),
-                ),
-              )
-            ],
-          ),
-          context: Get.context as BuildContext,
-        );
-        return false;
-      }
-    }
-
-    Webview webview = await WebviewWindow.create(
-      configuration: CreateConfiguration(
-        titleBarHeight: GetPlatform.isMacOS ? 24 : 0,
-        title: "小猫影视",
-      ),
-    );
-
-    void setWebviewActivePlay(VideoInfo curr) {
-      webview.evaluateJavaScript("setActionText(`${curr.name}`)");
-      webview.evaluateJavaScript("setActiveWithPlaylist(`${curr.url}`)");
-    }
-
-    bool updatePlayStateWithUrl(String url) {
-      var curr = playList.firstWhereOrNull((element) => element.url == url);
-      if (curr == null) return false;
-      var index = playList.indexOf(curr);
-      var realIndex = getReversalIndex(playList, index);
-      if (index >= 0) {
-        updatePlayState(tabIndex, index, realIndex, curr.name);
-        return true;
-      }
+    if (!GetPlatform.isDesktop) {
+      EasyLoading.showToast("当前构建未启用桌面 WebView 播放");
       return false;
     }
 
-    /// `MP4` 理论上来说不需要操作就可以直接喂给浏览器?
-    if (_httpServerContext == null ||
-        !(await webPlayerEmbedded.checkRunning())) {
-      _httpServerContext = await webPlayerEmbedded.createServer(
-        onMessage: (msg) {
-          String value = jsonDecode(msg.value);
-          switch (msg.type) {
-            case "switchVideo":
-              updatePlayStateWithUrl(getIframeRealUrl(value));
-          }
-        },
-      );
-    }
-
-    // url = url2Iframe(url, _httpServerContext!);
-    debugPrint("webview url: $url");
-    // NOTE(d1y): linux 不支持?
-    webview.launch(url);
-
-    // (不需要解析)白嫖的第三方资源会自动跳转广告网站, 这个方法将延迟删除广告
-    // NOTE(d1y): 果真需要吗?
-    // if (!needParse) {
-    //   int beforeRemoveADTime = 1200;
-    //   String execCode =
-    //       "alert('$webviewShowMessage');setTimeout(function() {window.removeEventListener('click', _popwnd_open);}, $beforeRemoveADTime)";
-    //   webview.addScriptToExecuteOnDocumentCreated(execCode);
-    // }
-
-    webview.setOnUrlRequestCallback((newUrl) {
-      var realUrl = getIframeRealUrl(newUrl);
-      updatePlayStateWithUrl(realUrl);
-      Future.delayed(kDelayExecInjectPlaylistJSCode, () async {
-        var curr =
-            playList.firstWhereOrNull((element) => element.url == realUrl);
-        if (curr == null) return;
-        setWebviewActivePlay(curr);
-      });
-      return true;
-    });
-
-    if (playList.length >= 2) {
-      webview.addScriptToExecuteOnDocumentCreated(
-        await injectPlaylistJSCode(playList, GetPlatform.isMacOS ? 0 : 12),
-      );
-      Future.delayed(kDelayExecInjectPlaylistJSCode, () async {
-        setWebviewActivePlay(curr);
-      });
-    }
-    return true;
+    EasyLoading.showToast("当前构建未启用桌面 WebView 播放");
+    return false;
   }
 
   Future<String> parseIframe(String iframe) async {

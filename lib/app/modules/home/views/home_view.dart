@@ -4,16 +4,13 @@ import 'package:aurora/aurora.dart';
 import 'package:catmovie/app/modules/home/views/tv.dart';
 import 'package:catmovie/app/widget/k_body.dart';
 import 'package:catmovie/app/widget/zoom.dart';
-import 'package:command_palette/command_palette.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'package:get/get.dart';
-import 'package:catmovie/app/extension.dart';
 import 'package:catmovie/app/modules/home/views/index_home_view.dart';
 import 'package:catmovie/app/modules/home/views/settings_view.dart';
-import 'package:catmovie/shared/enum.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:xi/xi.dart';
 
@@ -57,69 +54,9 @@ class HomeView extends GetView<HomeController> {
         ? const Color.fromRGBO(0, 0, 0, .63)
         : const Color.fromRGBO(255, 255, 255, .63);
     return GetBuilder<HomeController>(
-      builder: (homeview) => CommandPalette(
-        focusNode: controller.focusNode,
-        config: CommandPaletteConfig(
-          transitionCurve: Curves.easeOutQuart,
-          style: CommandPaletteStyle(
-            barrierFilter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
-            actionLabelTextAlign: TextAlign.left,
-            borderRadius: BorderRadius.circular(12),
-            textFieldInputDecoration: const InputDecoration(
-              hintText: "今天要做什么呢?",
-              contentPadding: EdgeInsets.all(16),
-            ),
-          ),
-          instructionConfig: CommandPaletteInstructionConfig(
-            showInstructions: false,
-          ),
-        ),
-        onTabSwitch: controller.switchTabview,
-        onClose: () {
-          if (homeview.currentBarIndex == 0) {
-            Future.delayed(const Duration(milliseconds: 100), () {
-              controller.focusNode.requestFocus();
-              controller.homeFocusNode.requestFocus();
-            });
-          }
-        },
-        actions: [
-          CommandPaletteAction.nested(
-            label: "切换镜像",
-            leading: const Icon(CupertinoIcons.book_circle, size: 26),
-            childrenActions: mirror.map((e) {
-              var currIndex = mirror.indexOf(e);
-              return CommandPaletteAction.single(
-                label: e.meta.name,
-                description: currIndex == controller.mirrorIndex ? '当前使用' : '',
-                onSelect: () {
-                  var idx = mirror.indexOf(e);
-                  controller.updateMirrorIndex(idx);
-                  Get.back();
-                },
-              );
-            }).toList(),
-          ),
-          CommandPaletteAction.single(
-            label: context.isDarkMode ? "切换亮色主题" : "切换暗色主题",
-            leading: Text(
-              context.isDarkMode ? "🌃" : "🌇",
-              style: const TextStyle(fontSize: 24),
-            ),
-            onSelect: () {
-              var newTheme = !context.isDarkMode
-                  ? SystemThemeMode.dark
-                  : SystemThemeMode.light;
-              updateSetting(SettingsAllKey.themeMode, newTheme);
-              Get.changeThemeMode(
-                  !context.isDarkMode ? ThemeMode.dark : ThemeMode.light);
-              controller.update();
-            },
-          )
-        ],
-        child: Scaffold(
-          backgroundColor: Colors.transparent,
-          body: Stack(
+      builder: (homeview) => Scaffold(
+        backgroundColor: Colors.transparent,
+        body: Stack(
             children: [
               Positioned.fill(
                 child: Aurora(
@@ -223,8 +160,7 @@ class HomeView extends GetView<HomeController> {
                   ),
                 )
               : null,
-          extendBody: homeview.showBottomNavigationBar,
-        ),
+        extendBody: homeview.showBottomNavigationBar,
       ),
     );
   }
